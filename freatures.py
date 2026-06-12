@@ -1,5 +1,14 @@
-import prevision_supermarche as ps
-import numpy as np
+import pandas as pd
+
+df = pd.read_csv("/Users/Sherif//Desktop/Prevision_supermarche/supermarket_sales_forecasting.csv")
+
+print(df.head())
+
+#conversion des dates
+df["Date"] = pd.to_datetime(df["Date"])
+df = df.sort_values(["Store_ID", "Date"])
+df["Date"]
+
 
 df["year"] = df["Date"].dt.year
 
