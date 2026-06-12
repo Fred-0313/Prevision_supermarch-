@@ -10,10 +10,11 @@ from pydantic import BaseModel, Field
 import pickle
 import numpy as np
 import os
-from typing import Optional
+
 
 # ─── Chargement des artefacts ────────────────────────────────────────────────
 MODELS_DIR = os.path.join(os.path.dirname(__file__), "..", "models")
+
 
 def load_artifact(filename: str):
     path = os.path.join(MODELS_DIR, filename)
@@ -21,6 +22,7 @@ def load_artifact(filename: str):
         raise FileNotFoundError(f"Artefact introuvable : {path}")
     with open(path, "rb") as f:
         return pickle.load(f)
+
 
 try:
     model_bundle = load_artifact("model.pkl")
@@ -93,8 +95,8 @@ class SalesPredictOutput(BaseModel):
 def root():
     """Statut de l'API et informations sur le modèle."""
     return {
-        "status": "✅ API opérationnelle",
-        "model":  "XGBoost (optimisé)",
+        "status": "✅ API opérationnelle" if MODEL is not None else "⚠️ Modèle indisponible",
+        "model":  "XGBoost (optimisé)" if MODEL is not None else None,
         "metrics": METRICS,
         "features": len(FEATURE_COLS),
         "docs":   "/docs"
@@ -170,7 +172,7 @@ def predict_sales(data: SalesPredictInput):
     prediction = max(0.0, round(prediction, 2))  # pas de ventes négatives
 
     # 5. Note de confiance indicative (basée sur MAPE)
-    mape = METRICS.get("MAPE(%)", 0)
+    mape = METRICS.get("MAPE(%)", METRICS.get("MAPE", 0))
     if mape < 5:
         note = f"Haute confiance (MAPE modèle : {mape:.2f}%)"
     elif mape < 10:
@@ -204,3 +206,4 @@ def get_valid_values():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
+
