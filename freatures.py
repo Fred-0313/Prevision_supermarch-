@@ -10,10 +10,7 @@ df["Date"] = pd.to_datetime(df["Date"])
 df = df.sort_values(["Store_ID", "Date"])
 df["Date"]
 
-=======
-import prevision_supermarche as ps
 import numpy as np
->>>>>>> f8dd463aa94ee458974f20e9a688eddd18cf3bed
 
 df["year"] = df["Date"].dt.year
 
