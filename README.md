@@ -209,8 +209,7 @@ Response: { "Sales_prediction": 14823.5, "confidence": "7.55%" }
 **SOSSA Fortuné Fred** — ML Engineer | Modélisation, Benchmark, FastAPI, MLOps
 - LinkedIn: linkedin.com/in/fortune-sossa
 
-Projet Personnel Collaboratif — 05 juin → 30 juillet 2026 (8 semaines)
+Projet Personnel Collaboratif — juillet 2026 
 
 ---
 
-⭐ **Star le repo si ça t'a aidé pour ton portfolio !**
