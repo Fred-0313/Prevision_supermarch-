@@ -1,9 +1,4 @@
-"""
-🚀 API FastAPI — Prédiction des ventes supermarché
-Projet : Personne B — Jour 6
-
-Endpoint : POST /predict
-"""
+""" API FastAPI — Prédiction des ventes supermarché"""
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field

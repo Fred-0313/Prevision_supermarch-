@@ -1,16 +1,14 @@
-# %% [markdown]
-# # 🤖 Jour 3–5 : Modélisation — Personne B
-# **Projet : Prédiction des ventes supermarché (Bénin)**
-#
+# Projet : Prédiction des ventes supermarché (Bénin)
+
 # Modèles entraînés :
-# - 📏 Régression Linéaire (baseline)
-# - 🌳 Decision Tree
-# - 🌲 Random Forest
-# - ⚡ XGBoost
-#
+# -  Régression Linéaire (baseline)
+# -  Decision Tree
+# -  Random Forest
+# -  XGBoost
+
 # Métriques : MAE, RMSE, R²
 
-# %% Imports
+#  Imports
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -32,10 +30,8 @@ REPORTS_PATH = "../reports/"
 os.makedirs(MODELS_PATH, exist_ok=True)
 os.makedirs(REPORTS_PATH, exist_ok=True)
 
-# %% [markdown]
-# ## 1. Chargement des données préparées
+# 1. Chargement des données préparées
 
-# %%
 df = pd.read_csv("../data/data_prepared.csv", parse_dates=["Date"])
 
 # Recréer le split temporel
@@ -56,12 +52,10 @@ y_test  = df_test[TARGET_COL]
 print(f"Train : {X_train.shape} | Test : {X_test.shape}")
 print(f"Features ({len(FEATURE_COLS)}) : {FEATURE_COLS}")
 
-# %% [markdown]
-# ## 2. Fonction d'évaluation
+# 2. Fonction d'évaluation
 
-# %%
 def evaluate_model(name, model, X_tr, y_tr, X_te, y_te):
-    """Entraîne et évalue un modèle, retourne un dict de métriques."""
+    '''Entraîne et évalue un modèle, retourne un dict de métriques.'''
     model.fit(X_tr, y_tr)
     preds = model.predict(X_te)
 
@@ -80,53 +74,36 @@ def evaluate_model(name, model, X_tr, y_tr, X_te, y_te):
         "MAPE(%)": round(mape, 2), "model_obj": model, "preds": preds
     }
 
-# %% [markdown]
-# ## 3. 📏 Baseline — Régression Linéaire (Jour 3)
-
-# %%
+# 3.Baseline — Régression Linéaire 
 lr_results = evaluate_model(
     "Régression Linéaire (baseline)",
     LinearRegression(),
     X_train, y_train, X_test, y_test
 )
 
-# %% [markdown]
-# ## 4. 🌳 Decision Tree (Jour 4)
-
-# %%
+# 4. Decision Tree 
 dt_results = evaluate_model(
     "Decision Tree",
     DecisionTreeRegressor(max_depth=10, min_samples_leaf=20, random_state=42),
     X_train, y_train, X_test, y_test
 )
 
-# %% [markdown]
-# ## 5. 🌲 Random Forest (Jour 4)
-
-# %%
+# 5. Random Forest 
 rf_results = evaluate_model(
     "Random Forest",
-    RandomForestRegressor(n_estimators=200, max_depth=12,
-                          min_samples_leaf=10, n_jobs=-1, random_state=42),
+    RandomForestRegressor(n_estimators=200, max_depth=12,min_samples_leaf=10, n_jobs=-1, random_state=42),
     X_train, y_train, X_test, y_test
 )
-
-# %% [markdown]
-# ## 6. ⚡ XGBoost (Jour 4)
-
-# %%
+# 6.XGBoost 
 xgb_results = evaluate_model(
     "XGBoost",
     XGBRegressor(n_estimators=300, max_depth=6, learning_rate=0.05,
                  subsample=0.8, colsample_bytree=0.8,
                  n_jobs=-1, random_state=42, verbosity=0),
-    X_train, y_train, X_test, y_test
-)
+    X_train, y_train, X_test, y_test)
 
-# %% [markdown]
-# ## 7. 📊 Comparaison des modèles
+# 7. Comparaison des modèles
 
-# %%
 all_results = [lr_results, dt_results, rf_results, xgb_results]
 results_df  = pd.DataFrame([{k: v for k, v in r.items()
                               if k not in ["model_obj", "preds"]}

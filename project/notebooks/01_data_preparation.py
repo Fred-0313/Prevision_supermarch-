@@ -1,5 +1,3 @@
-# %% [markdown]
-# # 📦 Jour 1–2 : Préparation des données — Personne B
 # **Projet : Prédiction des ventes supermarché (Bénin)**
 #
 # Étapes couvertes :
@@ -9,7 +7,7 @@
 # - Split Train / Test (temporel)
 # - Vérification des distributions
 
-# %% Imports
+#  Imports des bibliotheques 
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -20,28 +18,24 @@ import pickle
 import os
 
 # Chemins
-DATA_PATH   = "../data/supermarket_sales_forecasting.csv"
+DATA_PATH   = "supermarket_sales_forecasting.csv"
 MODELS_PATH = "../models/"
+REPORT_PATH = "reports"
 
 os.makedirs(MODELS_PATH, exist_ok=True)
-
-# %% [markdown]
-# ## 1. Chargement des données
-
-# %%
 df = pd.read_csv(DATA_PATH, parse_dates=["Date"])
+
 print(f"Shape : {df.shape}")
 print(f"Période : {df['Date'].min().date()} → {df['Date'].max().date()}")
 print(f"\nTypes :\n{df.dtypes}")
 print(f"\nValeurs manquantes :\n{df.isnull().sum()}")
 df.head()
 
-# %% [markdown]
-# ## 2. Feature Engineering — Variables temporelles
 
-# %%
+# Feature Engineering — Variables temporelles
+
 df["month"]        = df["Date"].dt.month
-df["day_of_week"]  = df["Date"].dt.dayofweek          # 0=Lundi … 6=Dimanche
+df["day_of_week"]  = df["Date"].dt.dayofweek        
 df["week_of_year"] = df["Date"].dt.isocalendar().week.astype(int)
 df["quarter"]      = df["Date"].dt.quarter
 df["year"]         = df["Date"].dt.year
@@ -67,10 +61,8 @@ print("Features temporelles et interactions créées :")
 print(df[["month","day_of_week","week_of_year","quarter","season",
           "economic_pressure","promo_weekend","promo_holiday"]].head())
 
-# %% [markdown]
-# ## 3. Encodage des variables catégorielles
+#Encodage des variables catégorielles
 
-# %%
 # Colonnes catégorielles à encoder
 cat_cols = ["Store_ID", "Store_Type", "City"]
 
@@ -86,10 +78,8 @@ with open(os.path.join(MODELS_PATH, "encoders.pkl"), "wb") as f:
     pickle.dump(encoders, f)
 print("\n✅ Encoders sauvegardés → models/encoders.pkl")
 
-# %% [markdown]
-# ## 4. Sélection des features finales
+# Sélection des features finales
 
-# %%
 FEATURE_COLS = [
     # Store features
     "Store_ID_enc", "Store_Type_enc", "City_enc",
@@ -110,10 +100,8 @@ TARGET_COL = "Sales"
 print(f"Nombre de features : {len(FEATURE_COLS)}")
 print(f"Target : {TARGET_COL}")
 
-# %% [markdown]
-# ## 5. Split Train / Test (temporel — respecte la chronologie)
+#Split Train / Test (temporel — respecte la chronologie)
 
-# %%
 # Split temporel : train 2023+2024, test 2025
 df_train = df[df["year"] <= 2024].copy()
 df_test  = df[df["year"] == 2025].copy()
@@ -127,10 +115,8 @@ print(f"Train : {X_train.shape[0]} lignes ({df_train['Date'].min().date()} → {
 print(f"Test  : {X_test.shape[0]} lignes ({df_test['Date'].min().date()}  → {df_test['Date'].max().date()})")
 print(f"Ratio : {len(X_test)/len(df)*100:.1f}% test")
 
-# %% [markdown]
-# ## 6. Vérification de la distribution Train vs Test
+# Vérification de la distribution Train vs Test
 
-# %%
 fig, axes = plt.subplots(1, 2, figsize=(12, 4))
 
 axes[0].hist(y_train, bins=40, color="#2563EB", alpha=0.7, label="Train")
@@ -140,22 +126,24 @@ axes[0].set_xlabel("Sales")
 axes[0].legend()
 
 # Boxplot par Store_Type
+distribution_train_test = {}
 df_plot = df.copy()
 df_plot["Split"] = df_plot["year"].apply(lambda y: "Train" if y <= 2024 else "Test")
 df_plot.boxplot(column="Sales", by="Store_Type", ax=axes[1])
 axes[1].set_title("Sales par Store_Type")
 plt.suptitle("")
 plt.tight_layout()
-plt.savefig("../reports/distribution_train_test.png", dpi=150, bbox_inches="tight")
+plt.savefig("distribution_train_test.png", dpi=150, bbox_inches="tight")
+with open(os.path.join(REPORT_PATH), "wb") as f:
+    pickle.dump(distribution_train_test, f)
+print("\n✅ distribution_train_test sauvegardés → models/encoders.pkl")
 plt.show()
 print("✅ Graphique sauvegardé → reports/distribution_train_test.png")
 
-# %% [markdown]
-# ## 7. Sauvegarde des données préparées
+# Sauvegarde des données préparées
 
-# %%
 # Sauvegarde pour reproductibilité
-df.to_csv("../data/data_prepared.csv", index=False)
+df.to_csv("Prevision_supermarche/project/data/data_prepared.csv", index=False)
 
 # Sauvegarde de la liste des features (utile pour l'API)
 with open(os.path.join(MODELS_PATH, "feature_cols.pkl"), "wb") as f:
