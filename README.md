@@ -58,7 +58,7 @@ Les responsables de supermarchés au Bénin planifient stocks et promos à l'int
 | **- Modélisation** | SOSSA Fred | 4 modèles, 5-Fold CV, MAE/RMSE/R²/MAPE |
 | **- Déploiement** | SOSSA Fred | joblib, FastAPI 3 endpoints, découplage via requests |
 | **- Interface web** | BIAOU Sherif | Streamlit 3 onglets |
-| ** - Doc** | Commun | sync_report, insights.md, README, rapport portfolio |
+| **-Doc** | Commun | sync_report, insights.md, README, rapport portfolio |
 
 ## 📈 Résultats
 
