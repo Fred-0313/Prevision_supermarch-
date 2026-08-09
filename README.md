@@ -52,10 +52,10 @@ Les responsables de supermarchés au Bénin planifient stocks et promos à l'int
 
 | Étape | Qui | Quoi |
 | :--- | :--- | :--- |
-| **S1 - EDA** | BIAOU Sherif | Stats, corrélations, boxplots. Découverte : Promo×Weekend non additif. Store_Size +0.684, Competitor -0.475 |
+| **- EDA** | BIAOU Sherif | Stats, corrélations, boxplots. Découverte : Promo×Weekend non additif. Store_Size +0.684, Competitor -0.475 |
 | **- Features** | Commun | Date → 5 temporelles, 4 interactions, LabelEncoder Store_ID/Type/City |
-| ** - Test V2** | Commun | Retrait Temp/Fuel/year → MAE 696→703 (+1%). Décision : on garde V1 complet |
-| ** - Modélisation** | SOSSA Fred | 4 modèles, 5-Fold CV, MAE/RMSE/R²/MAPE |
+| **- Test V2** | Commun | Retrait Temp/Fuel/year → MAE 696→703 (+1%). Décision : on garde V1 complet |
+| **- Modélisation** | SOSSA Fred | 4 modèles, 5-Fold CV, MAE/RMSE/R²/MAPE |
 | **- Déploiement** | SOSSA Fred | joblib, FastAPI 3 endpoints, découplage via requests |
 | **- Interface web** | BIAOU Sherif | Streamlit 3 onglets |
 | ** - Doc** | Commun | sync_report, insights.md, README, rapport portfolio |
