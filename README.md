@@ -7,7 +7,7 @@
 ![MAPE](https://img.shields.io/badge/MAPE-7.55%25-success?style=flat-square)
 ![MAE](https://img.shields.io/badge/MAE-696_FCFA-blue?style=flat-square)
 
-> **5 500 jours de tickets de caisse de 10 supermarchés béninois transformés en une API qui prédit demain à 7.55% près.**
+5 500 lignes simulees, echantillon de 550 jours par magasin en moyenne pour 10 supermarches beninois, transformees en une API qui predit demain a 7,55% pres. Ventes exprimees en milliers de FCFA.
 
 Le projet de prévision des ventes des supermarchés béninois présente un système complet de bout en bout qui transforme 5 500 jours de ventes de 10 magasins de Cotonou à Djougou en prédictions journalières à 7,55% d'erreur, grâce à un modèle XGBoost (R² 89%, MAE 696 FCFA) déployé via une API FastAPI et une interface Streamlit, et qui révèle que le type de magasin porte 33,9% de l'explication et que la promotion génère +27,9% de ventes, +42% le week-end.
 
@@ -38,10 +38,11 @@ Les responsables de supermarchés au Bénin planifient stocks et promos à l'int
 ## 📊 Dataset
 
 - **Fichier :** `supermarket_sales_forecasting.csv`
-- **Volume :** 5 500 lignes, 01/01/2023 → 31/12/2025
-- **Cible :** `Sales` FCFA/jour — Moy 9 889, ET 2 588, Min 1 507, Max 18 551
-- **Qualité :** 0 valeur manquante. Split 80/20 stratifié par Store_Type, seed 42
-- **Villes :** Cotonou, Porto-Novo, Parakou, Ouidah, Abomey-Calavi, Natitingou, Kandi, Bohicon, Lokossa, Djougou
+- Cible : Sales en milliers de FCFA/jour — Moy 9 889
+MAE 696 milliers de FCFA
+Promo +2 543 milliers de FCFA/j, soit +2 543 000 FCFA
+Type A = +58% vs Type C (12 309 vs 7 804 milliers de FCFA/j)
+- Villes : Cotonou, Porto-Novo, Parakou, Ouidah, Abomey-Calavi, Natitingou, Kandi, Bohicon, Lokossa, Djougou
 
 **16 variables brutes :**
 `Store_ID, Store_Type (A/B/C), Store_Size, City, Competitor_Distance, Promo, Holiday, School_Holiday, Weekend, Temperature, Rainfall, Fuel_Price, Inflation_Rate, Economic_Index, Date, Sales`
@@ -111,7 +112,7 @@ Streamlit (8501) --requests--> FastAPI (8000) --> model.pkl + encoders.pkl
 ## 🚀 Installation
 
 ```bash
-git clone https://github.com/votre-username/supermarket-sales-forecasting.git
+git clone git clone https://github.com/Fred-0313/Prevision_supermarch-
 cd supermarket-sales-forecasting
 
 # Environnement
@@ -172,28 +173,33 @@ Response: { "Sales_prediction": 14823.5, "confidence": "7.55%" }
 
 ## 📁 Structure
 ```
-.
-├── data/
-│   └── supermarket_sales_forecasting.csv
-├── models/
-│   ├── model.pkl
-│   ├── encoders.pkl
-│   └── feature_cols.pkl
-├── api/
-│   └── app.py (FastAPI)
-├── ui/
-│   └── stream_EDA.py (Streamlit)
-├── assets/
-│   ├── distribution_train_test.png
-│   ├── model_comparison.png
-│   ├── feature_importance.png
-│   ├── residuals_analysis.png
-│   └── sync_report_A_B.png
-├── docs/
-│   ├── insights.md
-│   └── Rapport_Portfolio.pdf
-├── requirements.txt
-└── README.md
+projet
+ api
+  __pycache__
+    app.py
+    stream_EDA.py
+ data
+   data_engineered.csv
+   data_prepared.csv
+   supermarket_sales_forecasting.csv
+ models
+   .Rapp.history
+   encoders.pkl
+   feature_cols.pkl
+   model.pkl
+   model_fallback.pkl
+notebooks
+reports
+.DS_Store
+README.md
+requirements.txt
+.DS_Store
+EDA.ipynb
+README.md
+analyse.ipynb
+config.py
+freatures.py
+prévisions_des_ventes_du_supermarc
 ```
 
 ## ⚠️ Limites & Next Steps
